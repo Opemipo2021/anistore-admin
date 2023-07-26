@@ -33,7 +33,7 @@ export async function POST(
                 id: params.storeId,
                 userId
             }
-        })
+        });
 
         
 
