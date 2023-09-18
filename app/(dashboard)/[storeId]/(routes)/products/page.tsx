@@ -1,6 +1,8 @@
 import prismadb from "@/lib/prismadb";
-import { BillboardClient } from "./components/client";
-import { BillboardsColumn } from "./components/columns";
+import { formatter } from "@/lib/utils";
+
+import { ProductClient } from "./components/client";
+import { ProductsColumn } from "./components/columns";
 import { format } from "date-fns";
 
 const ProductsPage = async ({
@@ -9,25 +11,36 @@ const ProductsPage = async ({
     params: {storeId: string}
 }) => {
       
-    const products = await prismadb.billboard.findMany({
+    const products = await prismadb.product.findMany({
         where: {
-            StoreId: params.storeId
+            storeId: params.storeId
+        },
+        include: {
+            category: true,
+            size: true,
+            color: true
         },
         orderBy: {
             createdAt: 'desc'
         }
     });
 
-    const formattedProduct: BillboardsColumn[] = products.map((item) => ({
+    const formattedProduct: ProductsColumn[] = products.map((item) => ({
         id: item.id,
-        label: item.label,
+        name: item.name,
+        isFeatured: item.isFeatured,
+        isArchived: item.isArchived,
+        price:  formatter.format (item.price.toNumber()),
+        category: item.category.name,
+        size: item.category.name,
+        color: item.color.value,
         createdAt: format(item.createdAt, "MMMM do, yyyy")
     }))
 
     return(
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-                <BillboardClient data={formattedProduct}/>
+                <ProductClient data={formattedProduct}/>
             </div>
         </div>
     );
@@ -35,8 +48,3 @@ const ProductsPage = async ({
 
 export default ProductsPage;
 
-
-// Cross check the Prsima db scripts before pushing to Prisma Client to avoid Typo errors.
-// Write script to wake PlanetScale database.
-// Push Products Model to Prisma Client Database  to complete Products page ASAP.
-// Then begin to work on the User side of the Website 

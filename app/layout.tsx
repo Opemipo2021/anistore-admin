@@ -1,15 +1,15 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import './globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Urbanist } from 'next/font/google'
 import { ModalProvider } from '@/providers/modal-provider'
 import { ToasterProvider } from '@/providers/toast-provider'
 
 
 
-const inter = Inter({ 
+const ubranist = Urbanist({ 
   subsets: ['latin'],
-  variable: '--font-inter'
+  variable: '--font-ubranist'
 })
 
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.variable} font-sans`}>
+        <body className={`${ubranist.variable} font-sans`}>
           <ToasterProvider />
           <ModalProvider />
           {children}
