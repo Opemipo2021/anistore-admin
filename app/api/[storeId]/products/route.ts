@@ -76,7 +76,7 @@ export async function POST(
         colorId,
         sizeId,
         storeId: params.storeId,
-        image: {
+        images: {
         createMany: {
             data: [
               ...images.map((image: { url: string }) => image)
@@ -118,7 +118,7 @@ export async function GET(
         isArchived: false
       },
       include: {
-        image: true,
+        images: true,
         category: true,
         color: true,
         size: true
